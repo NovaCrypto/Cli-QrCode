@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/NovaCrypto/Cli-QrCode.svg?branch=master)](https://travis-ci.org/NovaCrypto/Cli-QrCode)
+
 QR Code generator
 ==
 
