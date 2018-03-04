@@ -9,7 +9,7 @@ Usage
 ==
 
 ```
-usage: -i input -o output.png [-ec L/M/Q/H] [-s w,h]
+usage: -i input -o output.png [-ec L/M/Q/H] [-s w,h] [-t]
  -ec,--errorCorrection <arg>   Error correction, L,M,Q or H, default M:
                                L = ~7% correction
                                M = ~15% correction
@@ -18,10 +18,11 @@ usage: -i input -o output.png [-ec L/M/Q/H] [-s w,h]
  -i,--input <arg>              input text
  -o,--output <arg>             output png file
  -s,--size <arg>               width and height: w,h
+ -t,--transparent              transparent back colour
 ```
 
 Example:
 
 ```
-java -j QRCodeGen-1.0.jar -o outputImage.png -i "Text to encode"
+java -j QRCodeGen-1.01.jar -o outputImage.png -i "Text to encode"
 ```

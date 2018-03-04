@@ -3,6 +3,7 @@ package io.github.novacrypto.cli.qrcode;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -38,7 +39,7 @@ public final class MakeQRCode {
             generateQRCodeImage(cmd, width, height);
         } catch (final ParseException e) {
             System.out.println(e.getMessage());
-            formatter.printHelp("-i input -o output.png [-ec L/M/Q/H] [-s w,h]", options);
+            formatter.printHelp("-i input -o output.png [-ec L/M/Q/H] [-s w,h] [-t]", options);
 
             System.exit(1);
         }
@@ -52,7 +53,7 @@ public final class MakeQRCode {
         final BitMatrix bitMatrix = getBitMatrix(width, height, input, getHints(ecLevel));
         if (bitMatrix == null) return;
 
-        saveImage(bitMatrix, outputFilePath);
+        saveImage(bitMatrix, outputFilePath, cmd.hasOption("t") ? 0x00000000 : MatrixToImageConfig.WHITE);
 
         System.out.println(String.format("Written QR png, size %d x %d, EC: %s: %s", width, height, ecLevel, outputFilePath));
     }
@@ -63,7 +64,7 @@ public final class MakeQRCode {
         return hints;
     }
 
-    private static ErrorCorrectionLevel getErrorCorrectionLevel(CommandLine cmd) throws ParseException {
+    private static ErrorCorrectionLevel getErrorCorrectionLevel(final CommandLine cmd) throws ParseException {
         final String errorCorrection = cmd.getOptionValue("errorCorrection");
         if (errorCorrection == null) return ErrorCorrectionLevel.M;
         return parseEcLevel(errorCorrection);
@@ -96,10 +97,11 @@ public final class MakeQRCode {
         }
     }
 
-    private static void saveImage(final BitMatrix bitMatrix, final String outputFilePath) {
+    private static void saveImage(final BitMatrix bitMatrix, final String outputFilePath, final int offColor) {
         try {
             final Path path = FileSystems.getDefault().getPath(outputFilePath);
-            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+            final MatrixToImageConfig config = new MatrixToImageConfig(MatrixToImageConfig.BLACK, offColor);
+            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path, config);
         } catch (final IOException e) {
             System.out.println("Could not write QR Code file: " + e.getMessage());
             System.exit(3);
@@ -112,6 +114,7 @@ public final class MakeQRCode {
         options.addOption(getOutputOption());
         options.addOption(getSizeOption());
         options.addOption(getQualityOption());
+        options.addOption(getTransparentOption());
         return options;
     }
 
@@ -155,6 +158,14 @@ public final class MakeQRCode {
                         "Q = ~25%% correction%n" +
                         "H = ~30%% correction"))
                 .numberOfArgs(1)
+                .build();
+    }
+
+    private static Option getTransparentOption() {
+        return Option
+                .builder("t")
+                .longOpt("transparent")
+                .desc("transparent back colour")
                 .build();
     }
 }
