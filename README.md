@@ -17,12 +17,12 @@ usage: -i input -o output.png [-ec L/M/Q/H] [-s w,h] [-t]
                                H = ~30% correction
  -i,--input <arg>              input text
  -o,--output <arg>             output png file
- -s,--size <arg>               width and height: w,h
+ -s,--size <arg>               width and height: w,h, default 300,300
  -t,--transparent              transparent back colour
 ```
 
 Example:
 
 ```
-java -jar QRCodeGen-1.02.jar -i "Text to encode" -o outputImage.png
+java -jar QRCodeGen-1.03.jar -i "Text to encode" -o outputImage.png
 ```
