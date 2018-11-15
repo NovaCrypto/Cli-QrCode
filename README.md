@@ -24,5 +24,5 @@ usage: -i input -o output.png [-ec L/M/Q/H] [-s w,h] [-t]
 Example:
 
 ```
-java -j QRCodeGen-1.01.jar -o outputImage.png -i "Text to encode"
+java -jar QRCodeGen-1.02.jar -i "Text to encode" -o outputImage.png
 ```
